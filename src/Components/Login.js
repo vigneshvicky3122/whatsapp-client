@@ -102,7 +102,7 @@ function Login() {
               <div className="text-danger">{formik.errors.mobile}</div>
             ) : null}
           </div>
-          <div className="mb-1">
+          <div className="mb-3">
             <label for="exampleInputotp1" className="form-label d-flex">
               otp
             </label>
@@ -119,14 +119,14 @@ function Login() {
               <div className="text-danger">{formik.errors.otp}</div>
             ) : null}
           </div>
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <a
               href="/reset/password/mobile/verification"
               className="fs-6 d-flex justify-content-end text-secondary text-decoration-none"
             >
               forgot password
             </a>
-          </div>
+          </div> */}
           {ActiveResponse ? (
             <div className="mb-3" style={{ color: isColor, fontSize: "1px" }}>
               {Messages}

@@ -1,29 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { URL } from "../App";
-import { useNavigate } from "react-router-dom";
-function Signup() {
+import { useNavigate, useParams } from "react-router-dom";
+function Otp() {
   let navigate = useNavigate();
+  let params = useParams();
   const [Messages, setMessages] = useState("");
   const [ActiveResponse, setActiveResponse] = useState(false);
   const [isColor, setColor] = useState("red");
 
   let handleSubmit = async (data) => {
+    let f_data = { ...data, mobile: params.id };
     try {
-      let request = await axios.post(`${URL}/signup`, data);
+      let request = await axios.post(`${URL}/verification/otp`, f_data);
       if (request) {
         setActiveResponse(true);
       }
-      if (request.data.statusCode === 201) {
+      if (request.data.statusCode === 200) {
+        window.sessionStorage.setItem("app-token", request.data.token);
+        window.sessionStorage.setItem("mobile", params.id);
         setColor("green");
         setMessages(request.data.message);
         setTimeout(() => {
-          navigate(`/verification/otp/${data.mobile}`);
+          navigate(`/profile/set`);
         }, "3000");
       }
-      if (request.data.statusCode === 404) {
+      if (request.data.statusCode === 400) {
         setMessages(request.data.message);
       }
       if (request.data.statusCode === 500) {
@@ -36,15 +40,15 @@ function Signup() {
 
   const formik = useFormik({
     initialValues: {
-      mobile: "",
+      otp: "",
     },
     validationSchema: yup.object({
-      mobile: yup
+      otp: yup
         .number()
         .test(
           "len",
-          "Enter a valid Mobile Number",
-          (val) => !val || (val && val.toString().length === 10)
+          "Must be a 6 digits number",
+          (val) => !val || (val && val.toString().length === 6)
         )
         .required("* Required"),
     }),
@@ -53,9 +57,9 @@ function Signup() {
     },
   });
   useEffect(() => {
-    if (formik.touched.mobile && formik.errors.mobile) {
+    if (formik.touched.otp && formik.errors.otp) {
       setActiveResponse(true);
-      setMessages(formik.errors.mobile);
+      setMessages(formik.errors.otp);
     }
   }, [formik]);
   return (
@@ -64,16 +68,16 @@ function Signup() {
         <form className="forms" onSubmit={formik.handleSubmit}>
           <div className="mb-3">
             <label for="exampleInputEmail1" className="form-label d-flex">
-              *Enter Your Mobile Number
+              *One Time Password
             </label>
             <input
-              name="mobile"
-              type="number"
+              name="otp"
+              type="password"
               className="form-control shadow-none"
-              id="mobile"
-              placeholder="ie. 830XXXX122"
+              id="otp"
+              placeholder="x x x x x x"
               onChange={formik.handleChange}
-              value={formik.values.mobile}
+              value={formik.values.otp}
             />
           </div>
           <div className="mb-3">
@@ -81,7 +85,7 @@ function Signup() {
               type="submit"
               className="form-control btn btn-outline-success"
             >
-              Verify
+              Next
             </button>
           </div>
         </form>
@@ -95,4 +99,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Otp;

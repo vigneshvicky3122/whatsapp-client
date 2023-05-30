@@ -1,73 +1,353 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UserPage from "./UserPage";
 import Nav from "./Nav";
+import SearchBar from "./SearchBar";
 import io from "socket.io-client";
 import { URL } from "../App";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Profile from "./Profile";
 
 function Chat() {
+  let navigate = useNavigate();
+  const [Users, setUsers] = useState([]);
+  const [Chats, setChats] = useState([]);
+  const [User, setUser] = useState([]);
   const [Show, setShow] = useState(false);
-  const Author = useRef(null);
-  const Room = useRef(null);
+  const [Search, setSearch] = useState(false);
+  const [isProfile, setProfile] = useState(false);
+  const Author = useRef(parseInt(window.sessionStorage.getItem("mobile")));
+  const receiver = useRef({
+    name: "",
+    mobile: "",
+    profile: "https://dza205f4gev3o.cloudfront.net/Assets/download.png",
+  });
   const socket = useRef(io.connect(URL));
 
-  const joinRoom = (room, auth) => {
-    Room.current = room;
-    Author.current = auth;
+  useEffect(() => {
+    getData();
+  }, []);
 
-    if (Room.current !== null && Author.current !== null) {
-      window.localStorage.setItem("author", Author.current);
-      socket.current.emit("join_room", Room.current);
-      setShow(true);
+  const getData = async () => {
+    try {
+      let req = await axios.get(`${URL}/users`, {
+        headers: {
+          Authorization: window.sessionStorage.getItem("app-token"),
+          mobile: Author.current,
+        },
+      });
+      if (req.data.statusCode === 200) {
+        setUsers(req.data.users);
+        setChats(req.data.chats);
+        setUser(req.data.user);
+      }
+      if (req.data.statusCode === 400) {
+        navigate("/signup");
+      }
+      if (req.data.statusCode === 500) {
+        console.log(req.data.message);
+      }
+    } catch (error) {
+      console.log(error);
     }
+  };
+
+  const joinRoom = async (author, receiver) => {
+    await socket.current.emit("join_room", { author, receiver });
+    setShow(true);
   };
 
   return (
     <>
-      {!Show ? <Nav /> : null}
-      {!Show ? (
-        <ul className="list-group" id="Chats">
-          <li
-            onClick={() => joinRoom("1234", "wikky")}
-            className="list-group-item list-group-item-action"
-          >
-            <div className="d-flex w-100 justify-content-between">
-              <h6 className="mb-1">Bubbly</h6>
-              <small className="text-body-secondary">1 days ago</small>
-              <span className="badge bg-primary rounded-pill">14</span>
+      <div className={"main-wrapper"}>
+        {!Show && window.screen.width <= 425 ? (
+          <div className="main-1">
+            <Nav isProfile={isProfile} setProfile={setProfile} />
+            {isProfile ? (
+              <Profile
+                User={User}
+                setSearch={setSearch}
+                setShow={setShow}
+                setProfile={setProfile}
+              />
+            ) : null}
+            <SearchBar
+              Users={Users}
+              Author={Author.current}
+              joinRoom={joinRoom}
+              setSearch={setSearch}
+              setShow={setShow}
+              Search={Search}
+              User={User}
+              isProfile={isProfile}
+              setProfile={setProfile}
+              receiver={receiver}
+              Chats={Chats}
+            />
+
+            <div className="list-group-chats">
+              {!Search && !isProfile ? (
+                <ul className="list-group" id="Chats">
+                  {Chats &&
+                    Chats.map((Data, index) => {
+                      return (
+                        <>
+                          <li
+                            key={index}
+                            onClick={() => {
+                              joinRoom(
+                                Author.current,
+                                Users &&
+                                  Users.filter(
+                                    (c) =>
+                                      c.Mobile ===
+                                      Data.participants.filter(
+                                        (x) => x !== Author.current
+                                      )[0]
+                                  ).map((j) => j.Mobile)
+                              );
+                              receiver.current =
+                                Users &&
+                                Users.filter(
+                                  (c) =>
+                                    c.Mobile ===
+                                    Data.participants.filter(
+                                      (x) => x !== Author.current
+                                    )[0]
+                                ).map((j) => {
+                                  return {
+                                    name: j.Name,
+                                    mobile: j.Mobile,
+                                    profile: j.Profile,
+                                  };
+                                })[0];
+                            }}
+                            className="list-group-item list-group-item-action"
+                          >
+                            <div className="list-profile-con">
+                              <img
+                                src={
+                                  Users &&
+                                  Users.filter(
+                                    (c) =>
+                                      c.Mobile ===
+                                      Data.participants.filter(
+                                        (x) => x !== Author.current
+                                      )[0]
+                                  ).map((j) => j.Profile)
+                                }
+                                alt="Logo"
+                                width="30"
+                                height="30"
+                                className="list-profile d-inline-block align-text-top"
+                              />
+                            </div>
+                            <div className="list-data-item">
+                              <div className="list-data-con">
+                                <h6 className="mb-1">
+                                  {Users &&
+                                    Users.filter(
+                                      (c) =>
+                                        c.Mobile ===
+                                        Data.participants.filter(
+                                          (x) => x !== Author.current
+                                        )[0]
+                                    ).map((j) => j.Name)}
+                                </h6>
+                                <small className="text-body-secondary">
+                                  1 days ago
+                                </small>
+                              </div>
+                              <div className="list-data-con">
+                                <p className="mb-1">
+                                  {Data.messages.length > 0
+                                    ? Data.messages.some((m) => {
+                                        if (
+                                          !m.isDelete.includes(Author.current)
+                                        ) {
+                                          return Data.messages[
+                                            Data.messages.length - 1
+                                          ].content;
+                                        }
+                                      })
+                                    : null}
+                                </p>
+                                <span className="badge bg-primary rounded-pill">
+                                  {Data.messages.length > 0
+                                    ? Data.messages.filter(
+                                        (f) =>
+                                          !f.isDelete.includes(
+                                            Author.current
+                                          ) && f.isRead !== true
+                                      ).length === 0
+                                      ? null
+                                      : Data.messages.filter(
+                                          (f) =>
+                                            !f.isDelete.includes(
+                                              Author.current
+                                            ) && f.isRead !== true
+                                        ).length
+                                    : null}
+                                </span>
+                              </div>
+                            </div>
+                          </li>
+                        </>
+                      );
+                    })}
+                </ul>
+              ) : null}
             </div>
-            <p className="mb-1">Some placeholder content in a paragraph.</p>
-          </li>
-          <li
-            onClick={() => joinRoom("1234", "bubbly")}
-            className="list-group-item list-group-item-action"
-          >
-            <div className="d-flex w-100 justify-content-between">
-              <h6 className="mb-1">Wikky</h6>
-              <small className="text-body-secondary">2 days ago</small>
-              <span className="badge bg-primary rounded-pill">14</span>
+          </div>
+        ) : null}
+        {window.screen.width > 425 ? (
+          <div className="main-1">
+            <Nav isProfile={isProfile} setProfile={setProfile} />
+            {isProfile ? (
+              <Profile
+                User={User}
+                setSearch={setSearch}
+                setShow={setShow}
+                setProfile={setProfile}
+              />
+            ) : null}
+            <SearchBar
+              Users={Users}
+              Author={Author.current}
+              joinRoom={joinRoom}
+              setSearch={setSearch}
+              setShow={setShow}
+              Search={Search}
+              User={User}
+              receiver={receiver}
+              Chats={Chats}
+              isProfile={isProfile}
+              setProfile={setProfile}
+            />
+
+            <div className="list-group-chats">
+              {!Search && !isProfile ? (
+                <ul className="list-group" id="Chats">
+                  {Chats &&
+                    Chats.map((Data, index) => {
+                      return (
+                        <>
+                          <li
+                            key={index}
+                            onClick={() => {
+                              joinRoom(
+                                Author.current,
+                                Users &&
+                                  Users.filter(
+                                    (c) =>
+                                      c.Mobile ===
+                                      Data.participants.filter(
+                                        (x) => x !== Author.current
+                                      )[0]
+                                  ).map((j) => j.Mobile)
+                              );
+                              receiver.current =
+                                Users &&
+                                Users.filter(
+                                  (c) =>
+                                    c.Mobile ===
+                                    Data.participants.filter(
+                                      (x) => x !== Author.current
+                                    )[0]
+                                ).map((j) => {
+                                  return {
+                                    name: j.Name,
+                                    mobile: j.Mobile,
+                                    profile: j.Profile,
+                                  };
+                                })[0];
+                            }}
+                            className="list-group-item list-group-item-action"
+                          >
+                            <div className="list-profile-con">
+                              <img
+                                src={
+                                  Users &&
+                                  Users.filter(
+                                    (c) =>
+                                      c.Mobile ===
+                                      Data.participants.filter(
+                                        (x) => x !== Author.current
+                                      )[0]
+                                  ).map((j) => j.Profile)
+                                }
+                                alt="Logo"
+                                width="30"
+                                height="30"
+                                className="list-profile d-inline-block align-text-top"
+                              />
+                            </div>
+                            <div className="list-data-item">
+                              <div className="list-data-con">
+                                <h6 className="mb-1">
+                                  {Users &&
+                                    Users.filter(
+                                      (c) =>
+                                        c.Mobile ===
+                                        Data.participants.filter(
+                                          (x) => x !== Author.current
+                                        )[0]
+                                    ).map((j) => j.Name)}
+                                </h6>
+                                <small className="text-body-secondary">
+                                  1 days ago
+                                </small>
+                              </div>
+                              <div className="list-data-con">
+                                <p className="mb-1">
+                                  {Data.messages.length > 0
+                                    ? Data.messages[Data.messages.length - 1]
+                                        .content
+                                    : null}
+                                </p>
+                                <span className="badge bg-primary rounded-pill">
+                                  {Data.messages.length > 0
+                                    ? Data.messages.filter(
+                                        (f) =>
+                                          !f.isDelete.includes(
+                                            Author.current
+                                          ) && f.isRead !== true
+                                      ).length === 0
+                                      ? null
+                                      : Data.messages.filter(
+                                          (f) =>
+                                            !f.isDelete.includes(
+                                              Author.current
+                                            ) && f.isRead !== true
+                                        ).length
+                                    : null}
+                                </span>
+                              </div>
+                            </div>
+                          </li>
+                        </>
+                      );
+                    })}
+                </ul>
+              ) : null}
             </div>
-            <p className="mb-1">Some placeholder content in a paragraph.</p>
-          </li>
-          <li
-            onClick={() => joinRoom("123", "john")}
-            className="list-group-item list-group-item-action"
-          >
-            <div className="d-flex w-100 justify-content-between">
-              <h6 className="mb-1">billie</h6>
-              <small className="text-body-secondary">2 days ago</small>
-              <span className="badge bg-primary rounded-pill">14</span>
-            </div>
-            <p className="mb-1">Some placeholder content in a paragraph.</p>
-          </li>
-        </ul>
-      ) : (
-        <UserPage
-          socket={socket.current}
-          Room={Room.current}
-          Author={Author.current}
-          setShow={setShow}
-        />
-      )}
+          </div>
+        ) : null}
+
+        {Show ? (
+          <div className="main-2">
+            <UserPage
+              socket={socket.current}
+              Author={Author.current}
+              setShow={setShow}
+              receiver={receiver}
+              Chats={Chats}
+              setChats={setChats}
+              Users={Users}
+            />
+          </div>
+        ) : null}
+      </div>
     </>
   );
 }

@@ -2,14 +2,18 @@ body {
   margin: 0%;
   padding: 0%;
   box-sizing: border-box;
+  background-color: #fafafa;
 }
 .forms {
-  width: 30%;
-  height: fit-content;
-  padding: 4%;
-  text-align: center;
-  border: 1px solid #262626;
-  border-radius: 5%;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  gap: 5%;
+}
+.display-none {
+  display: none;
 }
 .form-center {
   display: flex;
@@ -23,6 +27,7 @@ body {
 }
 .form-center-signup {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -31,13 +36,163 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
-
+.form-label {
+  display: flex;
+  align-items: first baseline;
+  gap: 5px;
+  font-size: small;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: normal;
+}
+#mobile::placeholder {
+  font-size: small;
+  font-family: cursive;
+  font-weight: 500;
+}
+.pop-up-message {
+  display: flex;
+  justify-content: center;
+  font-size: small;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+}
+.main-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row !important;
+  gap: 10px;
+}
+.main-1 {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+.main-2 {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+.userPage-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.userPage-navBar-container {
+  width: 100%;
+  display: block;
+}
+.userPage-text-container {
+  position: fixed;
+  padding-left: 5px;
+  bottom: 0;
+  left: 50%;
+  width: 50%;
+}
+.navi-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.navi-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.navi-main-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.searchBar-dummy {
+  display: flex;
+}
+#profile {
+  display: none;
+}
+.no-Items {
+  display: flex;
+  justify-content: center;
+  color: #8a8585;
+  font-size: small;
+  font-weight: 300;
+  font-family: cursive;
+}
+.searchBar {
+  outline: none;
+  border-radius: 10px !important;
+}
+.searchBar::placeholder {
+  color: #8a8585;
+  letter-spacing: 1px;
+  font-size: small;
+  font-weight: 300;
+  font-family: cursive;
+}
+.searchBack {
+  display: flex;
+  margin: 10px 0 !important;
+  gap: 1em;
+}
+.list-profile {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.list-group-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+.list-data-item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.list-data-con {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.profile_pic {
+  width: 45px;
+  height: 45px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.profile-img {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
 .container {
   padding: 5%;
   width: 100%;
   height: 80vh;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+.container::-webkit-scrollbar-button {
+  width: 1px !important;
+}
+.list-group-chats {
+  overflow-y: scroll;
+}
+.list-group-chats::-webkit-scrollbar-button {
+  width: 1px !important;
 }
 .list-group-left {
   display: flex;
@@ -52,26 +207,81 @@ body {
   gap: 10px;
 }
 .list-group-item-left {
+  color: black;
+  background-color: #efefef;
   font-size: large;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 400;
   width: fit-content;
   height: fit-content;
-  text-align: center;
+  text-align: left;
+  outline: 1px solid #096ad9;
   padding: 10px;
-  outline: 1px solid #ffc107;
   border-radius: 50px 50px 50px 0;
 }
 .list-group-item-right {
-  font-size: large;
+  display: flex;
+  flex-direction: row;
+  align-items: self-end;
+  color: black;
+  background-color: #efefef;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 400;
+  font-size: large;
   width: fit-content;
   height: fit-content;
-  text-align: center;
+  text-align: right;
+  outline: 1px solid #096ad9;
   padding: 10px;
-  outline: 1px solid #ffc107;
   border-radius: 50px 50px 0 50px;
+}
+.ticks {
+  color: black;
+  font-size: xx-small;
+  font-weight: 600;
+  margin-left: 10px;
+}
+.double-ticks {
+  color: black;
+  font-size: xx-small;
+  font-weight: 600;
+  margin-left: 10px;
+}
+.double-blue-ticks {
+  color: #096ad9;
+  font-size: xx-small;
+  font-weight: 600;
+  margin-left: 10px;
+}
+.profile-container {
+  padding: 10px;
+}
+.profile-option-container {
+  width: 35%;
+  height: fit-content;
+}
+.msg-opt-list-con {
+  position: absolute;
+  top: 45%;
+  left: 40%;
+}
+@media screen and (max-width: 425px) {
+  .main-1 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .main-2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .userPage-text-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
 }
