@@ -1,15 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { EmojiButton } from "@joeattardi/emoji-button";
 
-function UserPage({
-  socket,
-  Author,
-  setShow,
-  receiver,
-  Users,
-  Chats,
-  setChats,
-}) {
+function UserPage({ socket, Author, setShow, receiver, Chats }) {
   const picker = new EmojiButton();
   picker.on("emoji", (selection) => {
     setCurrentMessage(CurrentMessage + selection.emoji);
@@ -20,10 +12,13 @@ function UserPage({
       Chats.filter((x) =>
         x.participants.includes(Author && parseInt(receiver.current.mobile))
       )[0].messages
+      ? Chats.filter((x) =>
+          x.participants.includes(Author && parseInt(receiver.current.mobile))
+        )[0].messages
+      : []
   );
 
   const [disabled, setDisabled] = useState(true);
-  const [DltMsg, setDltMsg] = useState(false);
   const messagesEndRef = useRef(null);
   const MessageId = useRef({ id: null });
   const MessageIndex = useRef({ index: null });
@@ -62,29 +57,18 @@ function UserPage({
       setCurrentMessage("");
     }
   };
-  const deleteForMe = () => {
-    console.log(MessageId.current.id);
+  const deleteForMe = async () => {
     let list = [...MessageList];
     list[MessageIndex.current.index].isDelete.push(Author);
     setMessageList(list);
     document.getElementById(MessageId.current.id).click();
-    socket.emit("delete-for-me", {
+    await socket.emit("delete-for-me", {
       message_id: MessageId.current.id,
       author: Author,
       receiver: receiver.current.mobile,
     });
   };
-  const deleteForEveryone = () => {
-    let list = [...MessageList];
-    list.splice(MessageIndex.current.index, 1);
-    setMessageList(list);
-    document.getElementById(MessageId.current.id).click();
-    socket.emit("delete-for-everyone", {
-      message_id: MessageId.current.id,
-      author: Author,
-      receiver: receiver.current.mobile,
-    });
-  };
+
   useEffect(() => {
     socket.on("receive_message", (Data) => {
       setMessageList([...MessageList, Data]);
@@ -170,11 +154,6 @@ function UserPage({
                         onClick={() => {
                           MessageId.current.id = message.message_id;
                           MessageIndex.current.index = index;
-                          if (Author === message.sender) {
-                            setDltMsg(true);
-                          } else {
-                            setDltMsg(false);
-                          }
                         }}
                       >
                         {message.content}
@@ -201,17 +180,6 @@ function UserPage({
             })}
           <div class="msg-opt-list-con collapse" id="collapseExample">
             <div class="list-group">
-              {DltMsg ? (
-                <button
-                  id="msg-opt-list"
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                  aria-current="true"
-                  onClick={() => deleteForEveryone()}
-                >
-                  Delete for Everyone
-                </button>
-              ) : null}
               <button
                 id="msg-opt-list"
                 type="button"

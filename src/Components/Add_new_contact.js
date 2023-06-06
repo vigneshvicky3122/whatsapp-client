@@ -17,14 +17,18 @@ function Add_new_contact() {
       let request = await axios.post(
         `${URL}/save/contact`,
         { data: data },
-        { headers: { mobile: window.localStorage.getItem("mobile") } }
+        {
+          headers: {
+            mobile: window.sessionStorage.getItem("mobile"),
+          },
+        }
       );
       if (request.data.statusCode === 200) {
         setActiveResponse(true);
         setColor("green");
         setMessages(request.data.message);
-        console.log(ActiveResponse, isColor, Messages);
         document.querySelector("#modal-btn-close").click();
+        window.location.reload();
       }
       if (request.data.statusCode === 500) {
         console.log(request.data.message);

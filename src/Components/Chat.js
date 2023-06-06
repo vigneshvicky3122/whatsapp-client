@@ -80,9 +80,7 @@ function Chat() {
               Search={Search}
               User={User}
               isProfile={isProfile}
-              setProfile={setProfile}
               receiver={receiver}
-              Chats={Chats}
             />
 
             <div className="list-group-chats">
@@ -92,41 +90,22 @@ function Chat() {
                     Chats.map((Data, index) => {
                       return (
                         <>
-                          <li
-                            key={index}
-                            onClick={() => {
-                              joinRoom(
-                                Author.current,
-                                Users &&
-                                  Users.filter(
-                                    (c) =>
-                                      c.Mobile ===
-                                      Data.participants.filter(
-                                        (x) => x !== Author.current
-                                      )[0]
-                                  ).map((j) => j.Mobile)
-                              );
-                              receiver.current =
-                                Users &&
-                                Users.filter(
-                                  (c) =>
-                                    c.Mobile ===
-                                    Data.participants.filter(
-                                      (x) => x !== Author.current
-                                    )[0]
-                                ).map((j) => {
-                                  return {
-                                    name: j.Name,
-                                    mobile: j.Mobile,
-                                    profile: j.Profile,
-                                  };
-                                })[0];
-                            }}
-                            className="list-group-item list-group-item-action"
-                          >
-                            <div className="list-profile-con">
-                              <img
-                                src={
+                          {Data.messages ? (
+                            <li
+                              key={index}
+                              onClick={() => {
+                                joinRoom(
+                                  Author.current,
+                                  Users &&
+                                    Users.filter(
+                                      (c) =>
+                                        c.Mobile ===
+                                        Data.participants.filter(
+                                          (x) => x !== Author.current
+                                        )[0]
+                                    ).map((j) => j.Mobile)
+                                );
+                                receiver.current =
                                   Users &&
                                   Users.filter(
                                     (c) =>
@@ -134,64 +113,89 @@ function Chat() {
                                       Data.participants.filter(
                                         (x) => x !== Author.current
                                       )[0]
-                                  ).map((j) => j.Profile)
-                                }
-                                alt="Logo"
-                                width="30"
-                                height="30"
-                                className="list-profile d-inline-block align-text-top"
-                              />
-                            </div>
-                            <div className="list-data-item">
-                              <div className="list-data-con">
-                                <h6 className="mb-1">
-                                  {Users &&
+                                  ).map((j) => {
+                                    return {
+                                      name: j.Name,
+                                      mobile: j.Mobile,
+                                      profile: j.Profile,
+                                    };
+                                  })[0];
+                              }}
+                              className="list-group-item list-group-item-action"
+                            >
+                              <div className="list-profile-con">
+                                <img
+                                  src={
+                                    Users &&
                                     Users.filter(
                                       (c) =>
                                         c.Mobile ===
                                         Data.participants.filter(
                                           (x) => x !== Author.current
                                         )[0]
-                                    ).map((j) => j.Name)}
-                                </h6>
-                                <small className="text-body-secondary">
-                                  1 days ago
-                                </small>
+                                    ).map((j) => j.Profile)
+                                  }
+                                  alt="Logo"
+                                  width="30"
+                                  height="30"
+                                  className="list-profile d-inline-block align-text-top"
+                                />
                               </div>
-                              <div className="list-data-con">
-                                <p className="mb-1">
-                                  {Data.messages.length > 0
-                                    ? Data.messages.some((m) => {
-                                        if (
-                                          !m.isDelete.includes(Author.current)
-                                        ) {
-                                          return Data.messages[
-                                            Data.messages.length - 1
-                                          ].content;
-                                        }
-                                      })
-                                    : null}
-                                </p>
-                                <span className="badge bg-primary rounded-pill">
-                                  {Data.messages.length > 0
-                                    ? Data.messages.filter(
-                                        (f) =>
-                                          !f.isDelete.includes(
-                                            Author.current
-                                          ) && f.isRead !== true
-                                      ).length === 0
-                                      ? null
-                                      : Data.messages.filter(
+                              <div className="list-data-item">
+                                <div className="list-data-con">
+                                  <h6 className="mb-1">
+                                    {Users &&
+                                      Users.filter(
+                                        (c) =>
+                                          c.Mobile ===
+                                          Data.participants.filter(
+                                            (x) => x !== Author.current
+                                          )[0]
+                                      ).map((j) => j.Name)}
+                                  </h6>
+                                  <small className="text-body-secondary">
+                                    1 days ago
+                                  </small>
+                                </div>
+                                <div className="list-data-con">
+                                  <p className="mb-1">
+                                    {Data.messages && Data.messages.length > 0
+                                      ? Data.messages.filter(
                                           (f) =>
                                             !f.isDelete.includes(
                                               Author.current
                                             ) && f.isRead !== true
-                                        ).length
-                                    : null}
-                                </span>
+                                        )[
+                                          Data.messages.filter(
+                                            (f) =>
+                                              !f.isDelete.includes(
+                                                Author.current
+                                              ) && f.isRead !== true
+                                          ).length - 1
+                                        ].content
+                                      : null}
+                                  </p>
+                                  <span className="badge bg-primary rounded-pill">
+                                    {Data.messages
+                                      ? Data.messages.filter(
+                                          (f) =>
+                                            !f.isDelete.includes(
+                                              Author.current
+                                            ) && f.isRead !== true
+                                        ).length === 0
+                                        ? null
+                                        : Data.messages.filter(
+                                            (f) =>
+                                              !f.isDelete.includes(
+                                                Author.current
+                                              ) && f.isRead !== true
+                                          ).length
+                                      : null}
+                                  </span>
+                                </div>
                               </div>
-                            </div>
-                          </li>
+                            </li>
+                          ) : null}
                         </>
                       );
                     })}
@@ -220,9 +224,7 @@ function Chat() {
               Search={Search}
               User={User}
               receiver={receiver}
-              Chats={Chats}
               isProfile={isProfile}
-              setProfile={setProfile}
             />
 
             <div className="list-group-chats">
@@ -300,9 +302,20 @@ function Chat() {
                               </div>
                               <div className="list-data-con">
                                 <p className="mb-1">
-                                  {Data.messages.length > 0
-                                    ? Data.messages[Data.messages.length - 1]
-                                        .content
+                                  {Data.messages && Data.messages.length > 0
+                                    ? Data.messages.filter(
+                                        (f) =>
+                                          !f.isDelete.includes(
+                                            Author.current
+                                          ) && f.isRead !== true
+                                      )[
+                                        Data.messages.filter(
+                                          (f) =>
+                                            !f.isDelete.includes(
+                                              Author.current
+                                            ) && f.isRead !== true
+                                        ).length - 1
+                                      ].content
                                     : null}
                                 </p>
                                 <span className="badge bg-primary rounded-pill">

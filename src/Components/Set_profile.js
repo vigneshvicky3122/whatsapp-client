@@ -26,8 +26,18 @@ function Set_profile() {
         },
       });
       if (req.data.statusCode === 200) {
-        setProfile(req.data.user[0].Profile);
-        setName(req.data.user[0].Name);
+        if (req.data.user[0].Profile === null) {
+          setProfile(
+            "https://dza205f4gev3o.cloudfront.net/Assets/camera (1).png"
+          );
+        } else {
+          setProfile(req.data.user[0].Profile);
+        }
+        if (req.data.user[0].Name === null) {
+          setName("");
+        } else {
+          setName(req.data.user[0].Name);
+        }
       }
       if (req.data.statusCode === 500) {
         console.log(req.data.message);
