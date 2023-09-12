@@ -112,7 +112,7 @@ function UserPage({ socket, Author, setShow, receiver, Chats, setChats }) {
                   className="d-inline-block align-text-top"
                 />
               </li>
-              <a className="navbar-brand align-items-center" href="#">
+              <a className="navbar-brand align-items-center" href="#!">
                 <img
                   src={receiver.current.profile}
                   alt="Logo"
@@ -123,7 +123,7 @@ function UserPage({ socket, Author, setShow, receiver, Chats, setChats }) {
                 &nbsp; {receiver.current.name}
               </a>
 
-              <a className="navbar-brand" href="#">
+              <a className="navbar-brand" href="#!">
                 <img
                   src="https://dza205f4gev3o.cloudfront.net/phone-call.png"
                   alt="Logo"
@@ -132,7 +132,7 @@ function UserPage({ socket, Author, setShow, receiver, Chats, setChats }) {
                   className="d-inline-block align-text-top"
                 />
               </a>
-              <a className="navbar-brand" href="#">
+              <a className="navbar-brand" href="#!">
                 <img
                   src="https://dza205f4gev3o.cloudfront.net/camcorder.png"
                   alt="Logo"

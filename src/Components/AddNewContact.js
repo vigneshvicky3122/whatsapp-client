@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-function Add_new_contact({ Users, setUsers }) {
+function AddNewContact({ Users, setUsers }) {
   let navigate = useNavigate();
 
   const [Messages, setMessages] = useState("");
@@ -86,7 +86,7 @@ function Add_new_contact({ Users, setUsers }) {
   }, [formik]);
   return (
     <>
-      <a data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <a href="#!" data-bs-toggle="modal" data-bs-target="#exampleModal">
         New Contact
       </a>
 
@@ -191,4 +191,4 @@ function Add_new_contact({ Users, setUsers }) {
   );
 }
 
-export default Add_new_contact;
+export default AddNewContact;

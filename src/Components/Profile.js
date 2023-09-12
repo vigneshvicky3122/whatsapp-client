@@ -97,7 +97,7 @@ function Profile({ User, setProfile, setSearch, setShow }) {
             <img
               className="profile-img"
               src={ProfileImg}
-              alt="profile picture"
+              alt="profile"
               onClick={() => {
                 if (!Disable) {
                   setOptionList(true);

@@ -3,7 +3,7 @@ import axios from "axios";
 import { URL } from "../App";
 import { useNavigate } from "react-router-dom";
 
-function Set_profile() {
+function SetProfile() {
   let navigate = useNavigate();
 
   const [Messages, setMessages] = useState("");
@@ -170,4 +170,4 @@ function Set_profile() {
   );
 }
 
-export default Set_profile;
+export default SetProfile;

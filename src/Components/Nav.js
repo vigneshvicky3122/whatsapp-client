@@ -1,5 +1,5 @@
 import React from "react";
-import Add_new_contact from "./Add_new_contact";
+import AddNewContact from "./AddNewContact";
 
 function Nav({ isProfile, setProfile, Users, setUsers }) {
   return (
@@ -34,7 +34,7 @@ function Nav({ isProfile, setProfile, Users, setUsers }) {
                     </a>
                   </li>
                   <li className="nav-item nav-link">
-                    <Add_new_contact Users={Users} setUsers={setUsers} />
+                    <AddNewContact Users={Users} setUsers={setUsers} />
                   </li>
 
                   <li
@@ -55,7 +55,7 @@ function Nav({ isProfile, setProfile, Users, setUsers }) {
           <div className="navi-header">
             <ul className="nav nav-fill nav-underline">
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <a className="nav-link" href="#!">
                   Status
                 </a>
               </li>
@@ -65,7 +65,7 @@ function Nav({ isProfile, setProfile, Users, setUsers }) {
                 </a>
               </li>
               <li className="nav-item ">
-                <a className="nav-link" href="#">
+                <a className="nav-link" href="#!">
                   Calls
                 </a>
               </li>
