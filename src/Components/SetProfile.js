@@ -21,8 +21,8 @@ function SetProfile() {
     try {
       let req = await axios.get(`${URL}/user`, {
         headers: {
-          Authorization: window.sessionStorage.getItem("app-token"),
-          mobile: window.sessionStorage.getItem("mobile"),
+          Authorization: window.localStorage.getItem("app-token"),
+          mobile: window.localStorage.getItem("mobile"),
         },
       });
       if (req.data.statusCode === 200) {
@@ -55,13 +55,13 @@ function SetProfile() {
       f_data = {
         name: Name,
         profile: "https://dza205f4gev3o.cloudfront.net/Assets/download.png",
-        mobile: window.sessionStorage.getItem("mobile"),
+        mobile: window.localStorage.getItem("mobile"),
       };
     } else {
       f_data = {
         name: Name,
         profile: Profile,
-        mobile: window.sessionStorage.getItem("mobile"),
+        mobile: window.localStorage.getItem("mobile"),
       };
     }
     try {

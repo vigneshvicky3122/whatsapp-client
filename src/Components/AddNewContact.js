@@ -15,7 +15,7 @@ function AddNewContact({ Users, setUsers }) {
   const handleSubmit = async (data) => {
     let update = [...Users];
     let index = update.findIndex(
-      (f) => f.Mobile === parseInt(window.sessionStorage.getItem("mobile"))
+      (f) => f.Mobile === parseInt(window.localStorage.getItem("mobile"))
     );
     update[index].MyContacts.push(data);
     setUsers(update);
@@ -26,8 +26,8 @@ function AddNewContact({ Users, setUsers }) {
         { data: data },
         {
           headers: {
-            Authorization: window.sessionStorage.getItem("app-token"),
-            mobile: window.sessionStorage.getItem("mobile"),
+            Authorization: window.localStorage.getItem("app-token"),
+            mobile: window.localStorage.getItem("mobile"),
           },
         }
       );
@@ -86,7 +86,12 @@ function AddNewContact({ Users, setUsers }) {
   }, [formik]);
   return (
     <>
-      <a href="#!" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <a
+        href="#!"
+        className="decoration-none"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
         New Contact
       </a>
 

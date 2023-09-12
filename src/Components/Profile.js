@@ -22,13 +22,13 @@ function Profile({ User, setProfile, setSearch, setShow }) {
       f_data = {
         name: Name,
         profile: User[0].Profile,
-        mobile: window.sessionStorage.getItem("mobile"),
+        mobile: window.localStorage.getItem("mobile"),
       };
     } else {
       f_data = {
         name: Name,
         profile: ProfileImg,
-        mobile: window.sessionStorage.getItem("mobile"),
+        mobile: window.localStorage.getItem("mobile"),
       };
     }
     try {
@@ -208,7 +208,7 @@ function Profile({ User, setProfile, setSearch, setShow }) {
                 type="button"
                 className="btn btn-outline-warning"
                 onClick={() => {
-                  window.sessionStorage.clear();
+                  window.localStorage.clear();
                   navigate("/signup");
                 }}
               >

@@ -19,8 +19,8 @@ function Otp() {
         setActiveResponse(true);
       }
       if (request.data.statusCode === 200) {
-        window.sessionStorage.setItem("app-token", request.data.token);
-        window.sessionStorage.setItem("mobile", params.id);
+        window.localStorage.setItem("app-token", request.data.token);
+        window.localStorage.setItem("mobile", params.id);
         setColor("green");
         setMessages(request.data.message);
         setTimeout(() => {

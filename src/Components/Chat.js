@@ -16,7 +16,7 @@ function Chat() {
   const [Show, setShow] = useState(false);
   const [Search, setSearch] = useState(false);
   const [isProfile, setProfile] = useState(false);
-  const Author = useRef(parseInt(window.sessionStorage.getItem("mobile")));
+  const Author = useRef(parseInt(window.localStorage.getItem("mobile")));
   const receiver = useRef({
     name: "",
     mobile: "",
@@ -32,7 +32,7 @@ function Chat() {
     try {
       let req = await axios.get(`${URL}/users`, {
         headers: {
-          Authorization: window.sessionStorage.getItem("app-token"),
+          Authorization: window.localStorage.getItem("app-token"),
           mobile: Author.current,
         },
       });
