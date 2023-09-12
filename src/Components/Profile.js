@@ -76,8 +76,8 @@ function Profile({ User, setProfile, setSearch, setShow }) {
           />
         </li>
 
-        <div class="input-group mb-4">
-          <div class="form-floating d-flex justify-content-center align-items-center">
+        <div className="input-group mb-4">
+          <div className="form-floating d-flex justify-content-center align-items-center">
             <input
               name="profile"
               type="file"
@@ -95,7 +95,7 @@ function Profile({ User, setProfile, setSearch, setShow }) {
               }}
             />
             <img
-              class="profile-img"
+              className="profile-img"
               src={ProfileImg}
               alt="profile picture"
               onClick={() => {
@@ -106,10 +106,10 @@ function Profile({ User, setProfile, setSearch, setShow }) {
             />
             &nbsp;
             {OptionList ? (
-              <div class="list-group">
+              <div className="list-group">
                 <button
                   type="button"
-                  class="list-group-item list-group-item-action "
+                  className="list-group-item list-group-item-action "
                   aria-current="true"
                   onClick={() => {
                     document.getElementById("profile-pic")?.requestFullscreen();
@@ -119,14 +119,14 @@ function Profile({ User, setProfile, setSearch, setShow }) {
                 </button>
                 <button
                   type="button"
-                  class="list-group-item list-group-item-action"
+                  className="list-group-item list-group-item-action"
                   onClick={() => document.querySelector("#profile-pic").click()}
                 >
                   Add New
                 </button>
                 <button
                   type="button"
-                  class="list-group-item list-group-item-action"
+                  className="list-group-item list-group-item-action"
                   onClick={() =>
                     setProfileImg(
                       "https://dza205f4gev3o.cloudfront.net/Assets/download.png"
@@ -137,7 +137,7 @@ function Profile({ User, setProfile, setSearch, setShow }) {
                 </button>
                 <button
                   type="button"
-                  class="list-group-item list-group-item-action"
+                  className="list-group-item list-group-item-action"
                   onClick={() => DownloadFile(ProfileImg)}
                 >
                   Save
@@ -146,32 +146,32 @@ function Profile({ User, setProfile, setSearch, setShow }) {
             ) : null}
           </div>
         </div>
-        <div class="input-group ">
-          <div class="form-floating">
+        <div className="input-group ">
+          <div className="form-floating">
             <input
               type="text"
-              class="form-control shadow-none"
+              className="form-control shadow-none"
               id="floatingInputGroup1"
               placeholder="Username"
               onChange={(e) => setName(e.target.value)}
               value={Name}
               disabled={Disable}
             />
-            <label for="floatingInputGroup1">Name</label>
+            <label htmlFor="floatingInputGroup1">Name</label>
           </div>
         </div>
-        <div class="input-group mb-3 ">
-          <div class="form-floating ">
+        <div className="input-group mb-3 ">
+          <div className="form-floating ">
             <input
               type="text"
-              class="form-control shadow-none"
+              className="form-control shadow-none"
               id="floatingInputGroup1"
               placeholder="Username"
               onChange={(e) => setMobile(e.target.value)}
               value={Mobile}
               disabled={true}
             />
-            <label for="floatingInputGroup1">Mobile Number</label>
+            <label htmlFor="floatingInputGroup1">Mobile Number</label>
           </div>
         </div>
 
@@ -180,12 +180,12 @@ function Profile({ User, setProfile, setSearch, setShow }) {
             {Messages}
           </div>
         ) : null}
-        <div class="input-group ">
-          <div class="form-floating d-flex justify-content-center">
+        <div className="input-group ">
+          <div className="form-floating d-flex justify-content-center">
             {Disable ? (
               <button
                 type="button"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 onClick={() => setDisable(false)}
               >
                 Edit
@@ -193,7 +193,7 @@ function Profile({ User, setProfile, setSearch, setShow }) {
             ) : (
               <button
                 type="button"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 onClick={() => {
                   setDisable(true);
                   setOptionList(false);
@@ -206,7 +206,7 @@ function Profile({ User, setProfile, setSearch, setShow }) {
             {Disable ? (
               <button
                 type="button"
-                class="btn btn-outline-warning"
+                className="btn btn-outline-warning"
                 onClick={() => {
                   window.sessionStorage.clear();
                   navigate("/signup");
@@ -217,7 +217,7 @@ function Profile({ User, setProfile, setSearch, setShow }) {
             ) : (
               <button
                 type="button"
-                class="btn btn-primary"
+                className="btn btn-primary"
                 onClick={() => handleSubmit()}
               >
                 Save

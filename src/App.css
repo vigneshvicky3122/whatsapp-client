@@ -105,6 +105,9 @@ body {
   display: flex;
   flex-direction: column;
 }
+.nav-link {
+  cursor: pointer;
+}
 .searchBar-dummy {
   display: flex;
 }

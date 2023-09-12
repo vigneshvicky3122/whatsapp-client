@@ -67,7 +67,7 @@ function Otp() {
       <div className="form-center-signup">
         <form className="forms" onSubmit={formik.handleSubmit}>
           <div className="mb-3">
-            <label for="exampleInputEmail1" className="form-label d-flex">
+            <label htmlFor="exampleInputEmail1" className="form-label d-flex">
               *One Time Password
             </label>
             <input

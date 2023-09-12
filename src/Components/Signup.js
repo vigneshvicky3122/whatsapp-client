@@ -63,7 +63,7 @@ function Signup() {
       <div className="form-center-signup">
         <form className="forms" onSubmit={formik.handleSubmit}>
           <div className="mb-3">
-            <label for="exampleInputEmail1" className="form-label d-flex">
+            <label htmlFor="exampleInputEmail1" className="form-label d-flex">
               *Enter Your Mobile Number
             </label>
             <input

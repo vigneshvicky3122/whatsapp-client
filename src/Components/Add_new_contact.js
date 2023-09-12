@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-function Add_new_contact() {
+function Add_new_contact({ Users, setUsers }) {
   let navigate = useNavigate();
 
   const [Messages, setMessages] = useState("");
@@ -13,12 +13,20 @@ function Add_new_contact() {
   const [isColor, setColor] = useState("red");
 
   const handleSubmit = async (data) => {
+    let update = [...Users];
+    let index = update.findIndex(
+      (f) => f.Mobile === parseInt(window.sessionStorage.getItem("mobile"))
+    );
+    update[index].MyContacts.push(data);
+    setUsers(update);
+
     try {
       let request = await axios.post(
         `${URL}/save/contact`,
         { data: data },
         {
           headers: {
+            Authorization: window.sessionStorage.getItem("app-token"),
             mobile: window.sessionStorage.getItem("mobile"),
           },
         }
@@ -27,8 +35,10 @@ function Add_new_contact() {
         setActiveResponse(true);
         setColor("green");
         setMessages(request.data.message);
-        document.querySelector("#modal-btn-close").click();
-        window.location.reload();
+        document.querySelector(".btn-close").click();
+      }
+      if (request.data.statusCode === 400) {
+        navigate("/login");
       }
       if (request.data.statusCode === 500) {
         console.log(request.data.message);
@@ -81,29 +91,32 @@ function Add_new_contact() {
       </a>
 
       <div
-        class="modal fade"
+        className="modal fade"
         id="exampleModal"
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">
                 Save New Contact
               </h1>
               <button
                 type="button"
-                class="btn-close"
+                className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               <form className="forms" onSubmit={formik.handleSubmit}>
                 <div className="mb-3">
-                  <label for="exampleInputEmail1" className="form-label d-flex">
+                  <label
+                    htmlFor="exampleInputEmail1"
+                    className="form-label d-flex"
+                  >
                     Name
                   </label>
                   <input
@@ -118,7 +131,10 @@ function Add_new_contact() {
                   />
                 </div>
                 <div className="mb-3">
-                  <label for="exampleInputEmail1" className="form-label d-flex">
+                  <label
+                    htmlFor="exampleInputEmail1"
+                    className="form-label d-flex"
+                  >
                     Mobile Number
                   </label>
                   <input
@@ -149,11 +165,11 @@ function Add_new_contact() {
                 </div>
               ) : null}
             </div>
-            <div class="modal-footer">
+            <div className="modal-footer">
               <button
                 id="modal-btn-close"
                 type="button"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
                 Close
@@ -163,7 +179,7 @@ function Add_new_contact() {
                   document.querySelector("#saveButton").click();
                 }}
                 type="button"
-                class="btn btn-primary"
+                className="btn btn-primary"
               >
                 Save
               </button>

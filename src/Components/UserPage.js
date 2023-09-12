@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { EmojiButton } from "@joeattardi/emoji-button";
 
-function UserPage({ socket, Author, setShow, receiver, Chats }) {
+function UserPage({ socket, Author, setShow, receiver, Chats, setChats }) {
   const picker = new EmojiButton();
   picker.on("emoji", (selection) => {
     setCurrentMessage(CurrentMessage + selection.emoji);
@@ -48,19 +48,38 @@ function UserPage({ socket, Author, setShow, receiver, Chats }) {
       isDelete: [],
     };
     if (CurrentMessage !== "") {
+      let update = [...Chats];
+      let index = update.findIndex((i) =>
+        i.participants.includes(
+          parseInt(receiver.current.mobile) && parseInt(Author)
+        )
+      );
+      update[index].messages.push(messageData);
+      setChats(update);
       await socket.emit("send_message", {
         messageData,
         receiver: receiver.current.mobile,
       });
 
-      setMessageList([...MessageList, messageData]);
+      // setMessageList([...MessageList, messageData]);
       setCurrentMessage("");
     }
   };
   const deleteForMe = async () => {
-    let list = [...MessageList];
-    list[MessageIndex.current.index].isDelete.push(Author);
-    setMessageList(list);
+    let update = [...Chats];
+    let index = update.findIndex((i) =>
+      i.participants.includes(
+        parseInt(receiver.current.mobile) && parseInt(Author)
+      )
+    );
+    let MessageIndex = update[index].messages.findIndex(
+      (f) => f.message_id === MessageId.current.id
+    );
+    update[index].messages.splice(MessageIndex, 1);
+    setChats(update);
+    // let list = [...MessageList];
+    // list[MessageIndex.current.index].isDelete.push(Author);
+    // setMessageList(list);
     document.getElementById(MessageId.current.id).click();
     await socket.emit("delete-for-me", {
       message_id: MessageId.current.id,
@@ -178,12 +197,12 @@ function UserPage({ socket, Author, setShow, receiver, Chats }) {
                 </>
               );
             })}
-          <div class="msg-opt-list-con collapse" id="collapseExample">
-            <div class="list-group">
+          <div className="msg-opt-list-con collapse" id="collapseExample">
+            <div className="list-group">
               <button
                 id="msg-opt-list"
                 type="button"
-                class="list-group-item list-group-item-action"
+                className="list-group-item list-group-item-action"
                 aria-current="true"
                 onClick={() => deleteForMe()}
               >

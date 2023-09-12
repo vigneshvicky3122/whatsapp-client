@@ -10,6 +10,8 @@ function SearchBar({
   Search,
   receiver,
   isProfile,
+  Chats,
+  setChats,
 }) {
   const [SearchText, setSearchText] = useState("");
   const [SearchItems, setSearchItems] = useState([]);
@@ -22,13 +24,32 @@ function SearchBar({
         User &&
           User[0].MyContacts.filter(
             (c) =>
-              c.name.startsWith(SearchText) &&
+              c.name.toLowerCase().startsWith(SearchText.toLowerCase()) &&
               Users.some((f) => f.Mobile === c.mobile)
           )
       );
     }
   }, [SearchText]);
+  async function CheckInRoom(author, receiver) {
+    let check =
+      Chats &&
+      Chats.some((s) =>
+        s.participants.includes(parseInt(author) && parseInt(receiver))
+      );
 
+    if (check) {
+      await joinRoom(author, receiver);
+    } else {
+      let update = [...Chats];
+      update.push({
+        participants: [parseInt(author), parseInt(receiver)],
+        createdAt: new Date(),
+        messages: [],
+      });
+      setChats(update);
+      await joinRoom(author, receiver);
+    }
+  }
   return (
     <>
       <div className="searchBar-dummy input-group searchBack">
@@ -72,7 +93,7 @@ function SearchBar({
                   <li
                     key={index}
                     onClick={() => {
-                      joinRoom(Author, element.mobile);
+                      CheckInRoom(Author, element.mobile);
                       receiver.current = {
                         name: element.name,
                         mobile: element.mobile,

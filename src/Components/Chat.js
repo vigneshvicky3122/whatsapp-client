@@ -62,7 +62,12 @@ function Chat() {
       <div className={"main-wrapper"}>
         {!Show && window.screen.width <= 425 ? (
           <div className="main-1">
-            <Nav isProfile={isProfile} setProfile={setProfile} />
+            <Nav
+              isProfile={isProfile}
+              setProfile={setProfile}
+              Users={Users}
+              setUsers={setUsers}
+            />
             {isProfile ? (
               <Profile
                 User={User}
@@ -73,6 +78,8 @@ function Chat() {
             ) : null}
             <SearchBar
               Users={Users}
+              Chats={Chats}
+              setChats={setChats}
               Author={Author.current}
               joinRoom={joinRoom}
               setSearch={setSearch}
@@ -115,7 +122,13 @@ function Chat() {
                                       )[0]
                                   ).map((j) => {
                                     return {
-                                      name: j.Name,
+                                      name:
+                                        User &&
+                                        User.map((n) => {
+                                          return n.MyContacts.filter(
+                                            (m) => m.mobile === j.Mobile
+                                          )[0].name;
+                                        }),
                                       mobile: j.Mobile,
                                       profile: j.Profile,
                                     };
@@ -151,7 +164,15 @@ function Chat() {
                                           Data.participants.filter(
                                             (x) => x !== Author.current
                                           )[0]
-                                      ).map((j) => j.Name)}
+                                      ).map(
+                                        (j) =>
+                                          User &&
+                                          User.map((n) => {
+                                            return n.MyContacts.filter(
+                                              (m) => m.mobile === j.Mobile
+                                            )[0].name;
+                                          })
+                                      )}
                                   </h6>
                                   <small className="text-body-secondary">
                                     1 days ago
@@ -206,7 +227,12 @@ function Chat() {
         ) : null}
         {window.screen.width > 425 ? (
           <div className="main-1">
-            <Nav isProfile={isProfile} setProfile={setProfile} />
+            <Nav
+              isProfile={isProfile}
+              setProfile={setProfile}
+              Users={Users}
+              setUsers={setUsers}
+            />
             {isProfile ? (
               <Profile
                 User={User}
@@ -217,6 +243,8 @@ function Chat() {
             ) : null}
             <SearchBar
               Users={Users}
+              Chats={Chats}
+              setChats={setChats}
               Author={Author.current}
               joinRoom={joinRoom}
               setSearch={setSearch}
@@ -258,7 +286,13 @@ function Chat() {
                                     )[0]
                                 ).map((j) => {
                                   return {
-                                    name: j.Name,
+                                    name:
+                                      User &&
+                                      User.map((n) => {
+                                        return n.MyContacts.filter(
+                                          (m) => m.mobile === j.Mobile
+                                        )[0].name;
+                                      }),
                                     mobile: j.Mobile,
                                     profile: j.Profile,
                                   };
@@ -294,7 +328,15 @@ function Chat() {
                                         Data.participants.filter(
                                           (x) => x !== Author.current
                                         )[0]
-                                    ).map((j) => j.Name)}
+                                    ).map(
+                                      (j) =>
+                                        User &&
+                                        User.map((n) => {
+                                          return n.MyContacts.filter(
+                                            (m) => m.mobile === j.Mobile
+                                          )[0].name;
+                                        })
+                                    )}
                                 </h6>
                                 <small className="text-body-secondary">
                                   1 days ago

@@ -118,7 +118,7 @@ function Set_profile() {
               onClick={() => {
                 document.querySelector("#profile").click();
               }}
-              class="profile_pic"
+              className="profile_pic"
             />
             <input
               name="profile"
@@ -137,7 +137,7 @@ function Set_profile() {
             />
           </div>
           <div className="mb-3">
-            <label for="exampleInputEmail1" className="form-label d-flex">
+            <label htmlFor="exampleInputEmail1" className="form-label d-flex">
               Enter Your Name
             </label>
             <input

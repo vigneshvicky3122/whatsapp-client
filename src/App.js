@@ -5,7 +5,6 @@ import Signup from "./Components/Signup";
 import "./App.css";
 import Otp from "./Components/Otp";
 import Set_profile from "./Components/Set_profile";
-//REACT_APP_BACKEND_URL="https://whatsapp-g3fn.onrender.com"
 export const URL = process.env.REACT_APP_BACKEND_URL;
 function App() {
   return (

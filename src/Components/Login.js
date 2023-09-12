@@ -86,7 +86,7 @@ function Login() {
           </div>
 
           <div className="mb-3">
-            <label for="exampleInputEmail1" className="form-label d-flex">
+            <label htmlFor="exampleInputEmail1" className="form-label d-flex">
               Mobile Number
             </label>
             <input
@@ -103,7 +103,7 @@ function Login() {
             ) : null}
           </div>
           <div className="mb-3">
-            <label for="exampleInputotp1" className="form-label d-flex">
+            <label htmlFor="exampleInputotp1" className="form-label d-flex">
               otp
             </label>
             <input
@@ -119,14 +119,7 @@ function Login() {
               <div className="text-danger">{formik.errors.otp}</div>
             ) : null}
           </div>
-          {/* <div className="mb-3">
-            <a
-              href="/reset/password/mobile/verification"
-              className="fs-6 d-flex justify-content-end text-secondary text-decoration-none"
-            >
-              forgot password
-            </a>
-          </div> */}
+
           {ActiveResponse ? (
             <div className="mb-3" style={{ color: isColor, fontSize: "1px" }}>
               {Messages}
