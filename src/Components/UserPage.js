@@ -11,7 +11,7 @@ function UserPage({ socket, Author, setShow, receiver, Chats, setChats }) {
     Chats &&
       Chats.filter((x) =>
         x.participants.includes(Author && parseInt(receiver.current.mobile))
-      )[0].messages
+      ).length > 0
       ? Chats.filter((x) =>
           x.participants.includes(Author && parseInt(receiver.current.mobile))
         )[0].messages
@@ -25,7 +25,7 @@ function UserPage({ socket, Author, setShow, receiver, Chats, setChats }) {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
-  }, [MessageList]);
+  }, [Chats]);
 
   useEffect(() => {
     if (CurrentMessage !== "") {
@@ -49,19 +49,34 @@ function UserPage({ socket, Author, setShow, receiver, Chats, setChats }) {
     };
     if (CurrentMessage !== "") {
       let update = [...Chats];
-      let index = update.findIndex((i) =>
+      let include = update.some((i) =>
         i.participants.includes(
-          parseInt(receiver.current.mobile) && parseInt(Author)
+          parseInt(Author) && parseInt(receiver.current.mobile)
         )
       );
-      update[index].messages.push(messageData);
-      setChats(update);
+      if (include) {
+        let index = update.findIndex((i) =>
+          i.participants.includes(
+            parseInt(Author) && parseInt(receiver.current.mobile)
+          )
+        );
+        update[index].messages.push(messageData);
+        setChats(update);
+      } else {
+        update.push({
+          _id: Date.now(),
+          participants: [Author.current, receiver.current.mobile],
+          createdAt: new Date(),
+          messages: [messageData],
+        });
+        setChats(update);
+      }
+
       await socket.emit("send_message", {
         messageData,
         receiver: receiver.current.mobile,
       });
 
-      // setMessageList([...MessageList, messageData]);
       setCurrentMessage("");
     }
   };
@@ -69,7 +84,7 @@ function UserPage({ socket, Author, setShow, receiver, Chats, setChats }) {
     let update = [...Chats];
     let index = update.findIndex((i) =>
       i.participants.includes(
-        parseInt(receiver.current.mobile) && parseInt(Author)
+        parseInt(Author) && parseInt(receiver.current.mobile)
       )
     );
     let MessageIndex = update[index].messages.findIndex(
@@ -77,9 +92,7 @@ function UserPage({ socket, Author, setShow, receiver, Chats, setChats }) {
     );
     update[index].messages.splice(MessageIndex, 1);
     setChats(update);
-    // let list = [...MessageList];
-    // list[MessageIndex.current.index].isDelete.push(Author);
-    // setMessageList(list);
+
     document.getElementById(MessageId.current.id).click();
     await socket.emit("delete-for-me", {
       message_id: MessageId.current.id,

@@ -22,10 +22,8 @@ function SearchBar({
     } else {
       setSearchItems(
         User &&
-          User[0].MyContacts.filter(
-            (c) =>
-              c.name.toLowerCase().startsWith(SearchText.toLowerCase()) &&
-              Users.some((f) => f.Mobile === c.mobile)
+          User[0].MyContacts.filter((c) =>
+            c.name.toLowerCase().startsWith(SearchText.toLowerCase())
           )
       );
     }
@@ -97,9 +95,13 @@ function SearchBar({
                       receiver.current = {
                         name: element.name,
                         mobile: element.mobile,
-                        profile: Users.filter(
-                          (x) => x.Mobile === element.mobile
-                        )[0].Profile,
+                        profile:
+                          Users.filter((x) => x.Mobile === element.mobile)
+                            .length > 0
+                            ? Users.filter(
+                                (x) => x.Mobile === element.mobile
+                              )[0].Profile
+                            : "https://dza205f4gev3o.cloudfront.net/Assets/download.png",
                       };
                       setSearchText("");
                       setSearch(false);
@@ -110,8 +112,12 @@ function SearchBar({
                     <div className="list-profile-con">
                       <img
                         src={
-                          Users.filter((x) => x.Mobile === element.mobile)[0]
-                            .Profile
+                          Users.filter((x) => x.Mobile === element.mobile)
+                            .length > 0
+                            ? Users.filter(
+                                (x) => x.Mobile === element.mobile
+                              )[0].Profile
+                            : "https://dza205f4gev3o.cloudfront.net/Assets/download.png"
                         }
                         alt="Logo"
                         width="30"

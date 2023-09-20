@@ -65,8 +65,8 @@ function Chat() {
             <Nav
               isProfile={isProfile}
               setProfile={setProfile}
-              Users={Users}
-              setUsers={setUsers}
+              User={User}
+              setUser={setUser}
             />
             {isProfile ? (
               <Profile
@@ -103,15 +103,11 @@ function Chat() {
                               onClick={() => {
                                 joinRoom(
                                   Author.current,
-                                  Users &&
-                                    Users.filter(
-                                      (c) =>
-                                        c.Mobile ===
-                                        Data.participants.filter(
-                                          (x) => x !== Author.current
-                                        )[0]
-                                    ).map((j) => j.Mobile)
+                                  Data.participants.filter(
+                                    (x) => x !== Author.current
+                                  )[0]
                                 );
+
                                 receiver.current =
                                   Users &&
                                   Users.filter(
@@ -120,19 +116,82 @@ function Chat() {
                                       Data.participants.filter(
                                         (x) => x !== Author.current
                                       )[0]
-                                  ).map((j) => {
-                                    return {
-                                      name:
-                                        User &&
-                                        User.map((n) => {
-                                          return n.MyContacts.filter(
-                                            (m) => m.mobile === j.Mobile
-                                          )[0].name;
-                                        }),
-                                      mobile: j.Mobile,
-                                      profile: j.Profile,
-                                    };
-                                  })[0];
+                                  ).length > 0
+                                    ? Users &&
+                                      Users.filter(
+                                        (c) =>
+                                          c.Mobile ===
+                                          Data.participants.filter(
+                                            (x) => x !== Author.current
+                                          )[0]
+                                      ).map((j) => {
+                                        return {
+                                          name:
+                                            User &&
+                                            User.map((n) =>
+                                              n.MyContacts.filter(
+                                                (m) => m.mobile === j.Mobile
+                                              ).length > 0
+                                                ? n.MyContacts.filter(
+                                                    (m) => m.mobile === j.Mobile
+                                                  )[0].name
+                                                : Data.participants.filter(
+                                                    (x) => x !== Author.current
+                                                  )[0]
+                                            )[0],
+                                          mobile: Data.participants.filter(
+                                            (x) => x !== Author.current
+                                          )[0],
+                                          profile:
+                                            Users &&
+                                            Users.filter(
+                                              (c) =>
+                                                c.Mobile ===
+                                                Data.participants.filter(
+                                                  (x) => x !== Author.current
+                                                )[0]
+                                            ).length > 0
+                                              ? Users &&
+                                                Users.filter(
+                                                  (c) =>
+                                                    c.Mobile ===
+                                                    Data.participants.filter(
+                                                      (x) =>
+                                                        x !== Author.current
+                                                    )[0]
+                                                ).map((j) => j.Profile)[0]
+                                              : "https://dza205f4gev3o.cloudfront.net/Assets/download.png",
+                                        };
+                                      })[0]
+                                    : {
+                                        name:
+                                          User &&
+                                          User.map((n) =>
+                                            n.MyContacts.filter(
+                                              (m) =>
+                                                m.mobile ===
+                                                Data.participants.filter(
+                                                  (x) => x !== Author.current
+                                                )[0]
+                                            ).length > 0
+                                              ? n.MyContacts.filter(
+                                                  (m) =>
+                                                    m.mobile ===
+                                                    Data.participants.filter(
+                                                      (x) =>
+                                                        x !== Author.current
+                                                    )[0]
+                                                )[0].name
+                                              : Data.participants.filter(
+                                                  (x) => x !== Author.current
+                                                )[0]
+                                          )[0],
+                                        mobile: Data.participants.filter(
+                                          (x) => x !== Author.current
+                                        )[0],
+                                        profile:
+                                          "https://dza205f4gev3o.cloudfront.net/Assets/download.png",
+                                      };
                               }}
                               className="list-group-item list-group-item-action"
                             >
@@ -146,9 +205,18 @@ function Chat() {
                                         Data.participants.filter(
                                           (x) => x !== Author.current
                                         )[0]
-                                    ).map((j) => j.Profile)
+                                    ).length > 0
+                                      ? Users &&
+                                        Users.filter(
+                                          (c) =>
+                                            c.Mobile ===
+                                            Data.participants.filter(
+                                              (x) => x !== Author.current
+                                            )[0]
+                                        ).map((j) => j.Profile)
+                                      : "https://dza205f4gev3o.cloudfront.net/Assets/download.png"
                                   }
-                                  alt="Logo"
+                                  alt="profile"
                                   width="30"
                                   height="30"
                                   className="list-profile d-inline-block align-text-top"
@@ -157,22 +225,26 @@ function Chat() {
                               <div className="list-data-item">
                                 <div className="list-data-con">
                                   <h6 className="mb-1">
-                                    {Users &&
-                                      Users.filter(
-                                        (c) =>
-                                          c.Mobile ===
-                                          Data.participants.filter(
-                                            (x) => x !== Author.current
-                                          )[0]
-                                      ).map(
-                                        (j) =>
-                                          User &&
-                                          User.map((n) => {
-                                            return n.MyContacts.filter(
-                                              (m) => m.mobile === j.Mobile
-                                            )[0].name;
-                                          })
-                                      )}
+                                    {User &&
+                                      User.map((n) => {
+                                        return n.MyContacts.filter(
+                                          (m) =>
+                                            m.mobile ===
+                                            Data.participants.filter(
+                                              (x) => x !== Author.current
+                                            )[0]
+                                        ).length > 0
+                                          ? n.MyContacts.filter(
+                                              (m) =>
+                                                m.mobile ===
+                                                Data.participants.filter(
+                                                  (x) => x !== Author.current
+                                                )[0]
+                                            )[0].name
+                                          : Data.participants.filter(
+                                              (x) => x !== Author.current
+                                            )[0];
+                                      })}
                                   </h6>
                                   <small className="text-body-secondary">
                                     1 days ago
@@ -197,7 +269,7 @@ function Chat() {
                                       : null}
                                   </p>
                                   <span className="badge bg-primary rounded-pill">
-                                    {Data.messages
+                                    {Data.messages.length > 0
                                       ? Data.messages.filter(
                                           (f) =>
                                             !f.isDelete.includes(
@@ -230,8 +302,8 @@ function Chat() {
             <Nav
               isProfile={isProfile}
               setProfile={setProfile}
-              Users={Users}
-              setUsers={setUsers}
+              User={User}
+              setUser={setUser}
             />
             {isProfile ? (
               <Profile
@@ -267,15 +339,11 @@ function Chat() {
                             onClick={() => {
                               joinRoom(
                                 Author.current,
-                                Users &&
-                                  Users.filter(
-                                    (c) =>
-                                      c.Mobile ===
-                                      Data.participants.filter(
-                                        (x) => x !== Author.current
-                                      )[0]
-                                  ).map((j) => j.Mobile)
+                                Data.participants.filter(
+                                  (x) => x !== Author.current
+                                )[0]
                               );
+
                               receiver.current =
                                 Users &&
                                 Users.filter(
@@ -284,19 +352,80 @@ function Chat() {
                                     Data.participants.filter(
                                       (x) => x !== Author.current
                                     )[0]
-                                ).map((j) => {
-                                  return {
-                                    name:
-                                      User &&
-                                      User.map((n) => {
-                                        return n.MyContacts.filter(
-                                          (m) => m.mobile === j.Mobile
-                                        )[0].name;
-                                      }),
-                                    mobile: j.Mobile,
-                                    profile: j.Profile,
-                                  };
-                                })[0];
+                                ).length > 0
+                                  ? Users &&
+                                    Users.filter(
+                                      (c) =>
+                                        c.Mobile ===
+                                        Data.participants.filter(
+                                          (x) => x !== Author.current
+                                        )[0]
+                                    ).map((j) => {
+                                      return {
+                                        name:
+                                          User &&
+                                          User.map((n) =>
+                                            n.MyContacts.filter(
+                                              (m) => m.mobile === j.Mobile
+                                            ).length > 0
+                                              ? n.MyContacts.filter(
+                                                  (m) => m.mobile === j.Mobile
+                                                )[0].name
+                                              : Data.participants.filter(
+                                                  (x) => x !== Author.current
+                                                )[0]
+                                          )[0],
+                                        mobile: Data.participants.filter(
+                                          (x) => x !== Author.current
+                                        )[0],
+                                        profile:
+                                          Users &&
+                                          Users.filter(
+                                            (c) =>
+                                              c.Mobile ===
+                                              Data.participants.filter(
+                                                (x) => x !== Author.current
+                                              )[0]
+                                          ).length > 0
+                                            ? Users &&
+                                              Users.filter(
+                                                (c) =>
+                                                  c.Mobile ===
+                                                  Data.participants.filter(
+                                                    (x) => x !== Author.current
+                                                  )[0]
+                                              ).map((j) => j.Profile)[0]
+                                            : "https://dza205f4gev3o.cloudfront.net/Assets/download.png",
+                                      };
+                                    })[0]
+                                  : {
+                                      name:
+                                        User &&
+                                        User.map((n) =>
+                                          n.MyContacts.filter(
+                                            (m) =>
+                                              m.mobile ===
+                                              Data.participants.filter(
+                                                (x) => x !== Author.current
+                                              )[0]
+                                          ).length > 0
+                                            ? n.MyContacts.filter(
+                                                (m) =>
+                                                  m.mobile ===
+                                                  Data.participants.filter(
+                                                    (x) => x !== Author.current
+                                                  )[0]
+                                              )[0].name
+                                            : Data.participants.filter(
+                                                (x) => x !== Author.current
+                                              )[0]
+                                        )[0],
+                                      mobile: Data.participants.filter(
+                                        (x) => x !== Author.current
+                                      )[0],
+                                      profile:
+                                        "https://dza205f4gev3o.cloudfront.net/Assets/download.png",
+                                    };
                             }}
                             className="list-group-item list-group-item-action"
                           >
@@ -310,9 +439,18 @@ function Chat() {
                                       Data.participants.filter(
                                         (x) => x !== Author.current
                                       )[0]
-                                  ).map((j) => j.Profile)
+                                  ).length > 0
+                                    ? Users &&
+                                      Users.filter(
+                                        (c) =>
+                                          c.Mobile ===
+                                          Data.participants.filter(
+                                            (x) => x !== Author.current
+                                          )[0]
+                                      ).map((j) => j.Profile)
+                                    : "https://dza205f4gev3o.cloudfront.net/Assets/download.png"
                                 }
-                                alt="Logo"
+                                alt="profile"
                                 width="30"
                                 height="30"
                                 className="list-profile d-inline-block align-text-top"
@@ -321,22 +459,26 @@ function Chat() {
                             <div className="list-data-item">
                               <div className="list-data-con">
                                 <h6 className="mb-1">
-                                  {Users &&
-                                    Users.filter(
-                                      (c) =>
-                                        c.Mobile ===
-                                        Data.participants.filter(
-                                          (x) => x !== Author.current
-                                        )[0]
-                                    ).map(
-                                      (j) =>
-                                        User &&
-                                        User.map((n) => {
-                                          return n.MyContacts.filter(
-                                            (m) => m.mobile === j.Mobile
-                                          )[0].name;
-                                        })
-                                    )}
+                                  {User &&
+                                    User.map((n) => {
+                                      return n.MyContacts.filter(
+                                        (m) =>
+                                          m.mobile ===
+                                          Data.participants.filter(
+                                            (x) => x !== Author.current
+                                          )[0]
+                                      ).length > 0
+                                        ? n.MyContacts.filter(
+                                            (m) =>
+                                              m.mobile ===
+                                              Data.participants.filter(
+                                                (x) => x !== Author.current
+                                              )[0]
+                                          )[0].name
+                                        : Data.participants.filter(
+                                            (x) => x !== Author.current
+                                          )[0];
+                                    })}
                                 </h6>
                                 <small className="text-body-secondary">
                                   1 days ago

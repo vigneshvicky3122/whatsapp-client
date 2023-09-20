@@ -114,10 +114,7 @@ body {
 #profile {
   display: none;
 }
-.decoration-none {
-  text-decoration: none;
-  cursor: pointer;
-}
+
 .no-Items {
   display: flex;
   justify-content: center;

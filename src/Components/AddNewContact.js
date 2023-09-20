@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-function AddNewContact({ Users, setUsers }) {
+function AddNewContact({ User, setUser }) {
   let navigate = useNavigate();
 
   const [Messages, setMessages] = useState("");
@@ -13,12 +13,12 @@ function AddNewContact({ Users, setUsers }) {
   const [isColor, setColor] = useState("red");
 
   const handleSubmit = async (data) => {
-    let update = [...Users];
+    let update = [...User];
     let index = update.findIndex(
       (f) => f.Mobile === parseInt(window.localStorage.getItem("mobile"))
     );
     update[index].MyContacts.push(data);
-    setUsers(update);
+    setUser(update);
 
     try {
       let request = await axios.post(
@@ -88,7 +88,7 @@ function AddNewContact({ Users, setUsers }) {
     <>
       <a
         href="#!"
-        className="decoration-none"
+        className="nav-item nav-link"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
       >

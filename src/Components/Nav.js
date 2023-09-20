@@ -1,7 +1,7 @@
 import React from "react";
 import AddNewContact from "./AddNewContact";
 
-function Nav({ isProfile, setProfile, Users, setUsers }) {
+function Nav({ isProfile, setProfile, User, setUser }) {
   return (
     <>
       <div className="navi-container">
@@ -34,7 +34,7 @@ function Nav({ isProfile, setProfile, Users, setUsers }) {
                     </a>
                   </li>
                   <li className="nav-item nav-link">
-                    <AddNewContact Users={Users} setUsers={setUsers} />
+                    <AddNewContact User={User} setUser={setUser} />
                   </li>
 
                   <li
