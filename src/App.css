@@ -9,7 +9,7 @@ body {
   height: auto;
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: flex-end;
   gap: 5%;
 }
 .display-none {
@@ -142,7 +142,7 @@ body {
 .list-profile {
   width: 40px;
   height: 40px;
-  background-size: cover;
+  object-fit: cover;
   background-position: center;
   border-radius: 50%;
   cursor: pointer;
@@ -169,7 +169,7 @@ body {
 .profile_pic {
   width: 45px;
   height: 45px;
-  background-size: cover;
+  object-fit: cover;
   background-position: center;
   border-radius: 50%;
   cursor: pointer;
@@ -177,7 +177,7 @@ body {
 .profile-img {
   width: 100px;
   height: 100px;
-  background-size: cover;
+  object-fit: cover;
   background-position: center;
   border-radius: 50%;
   cursor: pointer;
